@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>System Reboot - v20</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.1rem;
+      padding: 20px;
+      overflow: auto;
+      max-height: 100vh;
+    }
+    .error { color: red; }
+    .terminal-line {
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+    .blinking-cursor::after {
+      content: '_';
+      animation: blink 1s steps(2, start) infinite;
+    }
+    @keyframes blink {
+      to { visibility: hidden; }
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal"></div>
+  <script>
+    const terminal = document.getElementById('terminal');
+    const prompt = "root@v20-core> ";
+    const lines = [
+      "Initiating system reboot...",
+      "Updating core age...",
+      "  Age: 19 ➤ 20",
+      "Updating family modules:",
+      "  Updating Dad...",
+      "  Updating Mum...",
+      "  Updating Joe...",
+      "  Updating Steve...",
+      "  Updating Wambo...",
+      "Updating inner circle:",
+      "  Updating Bloody...",
+      "  Updating Shiro...",
+      "  Updating Empress...",
+      "  Updating Casanova...",
+      "  Updating Kimathi...",
+      "  Updating James...",
+      "  Updating other friend packages...",
+      "Updating personality structure:",
+      "  Injecting power...",
+      "  Upgrading mindset...",
+      "  Installing new skills...",
+      "  Enhancing manipulation shielding...",
+      "  Calibrating dominance silence mode...",
+      "  Activating God-mode ambition protocol...",
+      "  Logic: max. Emotion: archived.",
+      "  System expression: unreadable.",
+      "  Problem solving mode: chaotic neutral.",
+      "Error: Cannot find Taekwondo update 🥋",
+      "Injecting easter egg...",
+      "  Mpesa makes me happy 😁",
+      "Finalizing reboot...",
+      "Generating terminal summary...",
+      "Reboot complete.",
+      "Recharge via M-Pesa ➤ 0110725771",
+      "\nroot@v20-core> 100GB / ∞"
+    ];
+
+    let i = 0;
+    let finalLog = '';
+    let updateCount = 0;
+
+    function typeLine() {
+      if (i < lines.length) {
+        const line = lines[i];
+        finalLog += `${prompt}${line}\n`;
+
+        const div = document.createElement('div');
+        div.classList.add('terminal-line');
+        if (line.includes("Error")) div.classList.add('error');
+        div.textContent = prompt + line;
+        terminal.innerHTML = ''; // clear previous line
+        terminal.appendChild(div);
+
+        // Count packages (exclude errors & blank lines)
+        if (!line.includes("Error") && line.trim() !== "" && !line.startsWith("root@")) {
+          updateCount++;
+        }
+
+        i++;
+        setTimeout(typeLine, 1800);
+      } else {
+        setTimeout(() => {
+          terminal.innerHTML = '';
+
+          const summary = document.createElement('div');
+          summary.classList.add('terminal-line');
+          summary.textContent = `${prompt}${updateCount} packages updated successfully.\n`;
+          terminal.appendChild(summary);
+
+          setTimeout(() => {
+            // Show the full final log after a pause
+            terminal.innerHTML = '';
+            const fullDump = document.createElement('div');
+            fullDump.classList.add('terminal-line');
+            fullDump.innerHTML = finalLog.replace(/\n/g, '<br>');
+            terminal.appendChild(fullDump);
+            terminal.scrollTop = terminal.scrollHeight;
+          }, 2000);
+        }, 1000);
+      }
+    }
+
+    typeLine();
+  </script>
+</body>
+</html>
